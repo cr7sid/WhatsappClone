@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
     tools:context=".SignUpActivity">
 
@@ -18,9 +17,10 @@
         app:srcCompat="@drawable/ic_whatsapp" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="420dp"
-        android:layout_gravity="center_vertical"
+        android:elevation="4dp"
         app:cardBackgroundColor="@color/grayBackground"
         app:cardCornerRadius="2dp">
 
@@ -89,8 +89,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@android:color/white"
-                android:inputType="textWebEmailAddress"
                 android:hint="Enter email"
+                android:inputType="textWebEmailAddress"
                 android:textSize="20dp">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -122,8 +122,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="130dp"
-                android:textSize="20sp"
-                android:text="Sign Up with Phone" />
+                android:text="Sign Up with Phone"
+                android:textSize="20sp" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
