@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:layout_gravity="center"
-        app:cardBackgroundColor="@color/grayBackground"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="2dp">
 
         <Button

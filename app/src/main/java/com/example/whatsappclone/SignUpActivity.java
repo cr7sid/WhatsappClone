@@ -87,6 +87,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         Users users = new Users(binding.etFullName.getText().toString(), binding.etEmail.getText().toString(), binding.etPassword.getText().toString());
                                         String id = task.getResult().getUser().getUid();
                                         database.getReference().child("Users").child(id).setValue(users);
+                                        startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
                                         progressDialog.dismiss();
 
                                     } else {
