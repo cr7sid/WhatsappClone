@@ -8,6 +8,14 @@ public class Users {
         //Empty constructor required for Firebase
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     //SignUp constructor
     public Users(String userName, String email, String password) {
         this.userName = userName;
@@ -46,14 +54,6 @@ public class Users {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getPassword() {

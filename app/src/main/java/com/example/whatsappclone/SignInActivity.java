@@ -68,29 +68,43 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                progressDialog.show();
-                mAuth.signInWithEmailAndPassword(binding.etEmail.getText().toString(), binding.etPassword.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(binding.etEmail.getText().toString().equals("")) {
 
-                                progressDialog.dismiss();
-                                Log.i("Login", binding.etEmail.getText().toString() + " " + binding.etPassword.getText().toString());
+                    binding.etEmail.setError("Enter Email");
 
-                                if(task.isSuccessful()) {
+                }
+                else if(binding.etPassword.getText().toString().equals("")) {
 
-                                    Log.i("Login", "Login Success!!!");
-                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                    binding.etPassword.setError("Enter Password");
 
-                                } else {
+                }
 
-                                    Log.i("Login", task.getException().getMessage());
-                                    Toast.makeText(SignInActivity.this, task.getException().getMessage() , Toast.LENGTH_SHORT);
+                else {
+
+                    progressDialog.show();
+                    mAuth.signInWithEmailAndPassword(binding.etEmail.getText().toString(), binding.etPassword.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                    progressDialog.dismiss();
+                                    Log.i("Login", binding.etEmail.getText().toString() + " " + binding.etPassword.getText().toString());
+
+                                    if (task.isSuccessful()) {
+
+                                        Log.i("Login", "Login Success!!!");
+                                        Toast.makeText(SignInActivity.this, "User logged in!", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+
+                                    } else {
+
+                                        Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                    }
 
                                 }
-
-                            }
-                        });
+                            });
+                }
 
             }
         });
