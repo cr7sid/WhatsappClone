@@ -14,7 +14,10 @@ import com.example.whatsappclone.databinding.ActivityChatDetailsBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -68,6 +71,34 @@ public class ChatDetails extends AppCompatActivity {
 
         final String sendersRoom = senderId + receiverId;
         final String receiversRoom = receiverId + senderId;
+
+        database.getReference().child("Chats")
+                .child(sendersRoom)
+                .addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        messageModels.clear();
+
+                        for(DataSnapshot snapshot1 : snapshot.getChildren()) {
+
+                            MessageModel model = snapshot1.getValue(MessageModel.class);
+                            messageModels.add(model);
+
+                        }
+
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+
+
+                    }
+                });
 
         binding.send.setOnClickListener(new View.OnClickListener() {
 
