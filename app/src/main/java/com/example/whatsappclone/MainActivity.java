@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.settings:
-                Toast.makeText(MainActivity.this, "Settings Clicked", Toast.LENGTH_SHORT);
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
 
             case R.id.logout:

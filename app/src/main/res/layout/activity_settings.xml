@@ -25,14 +25,15 @@
         android:layout_marginRight="20dp"
         android:gravity="center">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image_upload"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp"
             android:layout_marginStart="10dp"
-            app:tint="@color/white"
             android:src="@drawable/ic_user" />
         <ImageView
             android:id="@+id/add_image"
@@ -94,6 +95,7 @@
                 android:textColorHint="@color/white" />
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -123,7 +125,7 @@
             android:drawablePadding="15dp"
             android:drawableTint="@color/colorPrimary"
             android:padding="10dp"
-            android:text="TextView"
+            android:text="Privacy Policy"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -137,7 +139,7 @@
             android:drawablePadding="15dp"
             android:drawableTint="@color/colorPrimary"
             android:padding="10dp"
-            android:text="TextView"
+            android:text="About Us"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -151,7 +153,7 @@
             android:drawablePadding="15dp"
             android:drawableTint="@color/colorPrimary"
             android:padding="10dp"
-            android:text="TextView"
+            android:text="Invite a friend"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -165,7 +167,7 @@
             android:drawablePadding="15dp"
             android:drawableTint="@color/colorPrimary"
             android:padding="10dp"
-            android:text="TextView"
+            android:text="Notification"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -175,11 +177,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:drawableLeft="@drawable/ic_lock"
+            android:drawableLeft="@drawable/ic_help_web_button"
             android:drawablePadding="15dp"
             android:drawableTint="@color/colorPrimary"
             android:padding="10dp"
-            android:text="TextView"
+            android:text="Help"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
