@@ -11,6 +11,11 @@ import android.widget.TextView;
 import com.example.whatsappclone.ChatDetails;
 import com.example.whatsappclone.Models.Users;
 import com.example.whatsappclone.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,6 +27,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
 
     ArrayList<Users> usersList;
     Context context;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     public UsersAdapter(ArrayList<Users> usersList, Context context) {
 
@@ -46,6 +52,32 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
         Users users = usersList.get(position);
         Picasso.get().load(users.getProfilePic()).placeholder(R.drawable.ic_user).into(holder.imageView);
         holder.etUserName.setText(users.getUserName());
+
+        database.getReference()
+                .child("Chats")
+                .child(FirebaseAuth.getInstance().getUid() + users.getUserId())
+                .orderByChild("timestamp")
+                .limitToLast(1)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        if(snapshot.hasChildren())
+
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                            holder.tvLastMessage.setText(dataSnapshot.child("message").getValue().toString());
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
 
@@ -79,13 +111,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
-        TextView etUserName, etLastMessage;
+        TextView etUserName, tvLastMessage;
 
         public ViewHolder(@NonNull View itemView) {
 
             super(itemView);
             imageView = itemView.findViewById(R.id.profile_image);
-            etLastMessage = itemView.findViewById(R.id.tvLastMessage);
+            tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
             etUserName = itemView.findViewById(R.id.tvUserName);
 
         }

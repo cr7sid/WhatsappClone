@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.example.whatsappclone.Adapters.ChatAdapter;
 import com.example.whatsappclone.Models.MessageModel;
-import com.example.whatsappclone.databinding.ActivityChatDetailsBinding;
+import com.example.whatsappclone.databinding.ActivityGroupChatBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,62 +18,46 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ChatDetails extends AppCompatActivity {
+public class GroupChat extends AppCompatActivity {
 
-    ActivityChatDetailsBinding binding;
-    FirebaseDatabase database;
-    FirebaseAuth mAuth;
+    ActivityGroupChatBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityChatDetailsBinding.inflate(getLayoutInflater());
+        binding = ActivityGroupChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         getSupportActionBar().hide();
-
-        database = FirebaseDatabase.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-
-        Intent intent = getIntent();
-
-        final String senderId = mAuth.getUid();
-        String receiverId = intent.getStringExtra("userId");
-        String profilePic = intent.getStringExtra("profilePic");
-        String userName = intent.getStringExtra("userName");
-
-        binding.userName.setText(userName);
-        Picasso.get().load(profilePic).placeholder(R.drawable.ic_user).into(binding.profileImage);
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(ChatDetails.this, MainActivity.class));
+                startActivity(new Intent(GroupChat.this, MainActivity.class));
 
             }
         });
 
-        final ArrayList<MessageModel> messageModels = new ArrayList<>();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+        final ArrayList<MessageModel> messageModels = new ArrayList<>();
         final ChatAdapter adapter = new ChatAdapter(messageModels, this);
 
+        final String senderId = FirebaseAuth.getInstance().getUid();
+
+        binding.userName.setText("Friends Group");
         binding.chatRecyclerView.setAdapter(adapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.chatRecyclerView.setLayoutManager(layoutManager);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        binding.chatRecyclerView.setLayoutManager(linearLayoutManager);
-
-        final String sendersRoom = senderId + receiverId;
-        final String receiversRoom = receiverId + senderId;
-
-        database.getReference().child("Chats")
-                .child(sendersRoom)
+        database.getReference()
+                .child("Group Chat")
                 .addValueEventListener(new ValueEventListener() {
 
                     @Override
@@ -90,13 +74,10 @@ public class ChatDetails extends AppCompatActivity {
 
                         adapter.notifyDataSetChanged();
 
-
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
-
 
                     }
                 });
@@ -107,26 +88,23 @@ public class ChatDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 String message = binding.messageText.getText().toString();
-
-                final MessageModel model = new MessageModel(senderId, message);
+                MessageModel model = new MessageModel(senderId, message);
                 model.setTimestamp(new Date().getTime());
 
                 binding.messageText.setText("");
 
-                database.getReference().child("Chats")
-                        .child(sendersRoom)
-                        .push().setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                database.getReference()
+                        .child("Group Chat")
+                        .push()
+                        .setValue(model)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
 
                             @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                            public void onComplete(@NonNull Task<Void> task) {
 
-                        database.getReference().child("Chats")
-                                .child(receiversRoom)
-                                .push().setValue(model);
 
-                    }
-                });
-
+                            }
+                        });
             }
         });
 
