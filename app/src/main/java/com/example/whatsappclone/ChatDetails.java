@@ -62,7 +62,7 @@ public class ChatDetails extends AppCompatActivity {
 
         final ArrayList<MessageModel> messageModels = new ArrayList<>();
 
-        final ChatAdapter adapter = new ChatAdapter(messageModels, this);
+        final ChatAdapter adapter = new ChatAdapter(messageModels, this, receiverId);
 
         binding.chatRecyclerView.setAdapter(adapter);
 
@@ -84,6 +84,7 @@ public class ChatDetails extends AppCompatActivity {
                         for(DataSnapshot snapshot1 : snapshot.getChildren()) {
 
                             MessageModel model = snapshot1.getValue(MessageModel.class);
+                            model.setMessageId(snapshot1.getKey());
                             messageModels.add(model);
 
                         }
@@ -106,26 +107,34 @@ public class ChatDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String message = binding.messageText.getText().toString();
+                if(!binding.messageText.getText().toString().equals("")) {
 
-                final MessageModel model = new MessageModel(senderId, message);
-                model.setTimestamp(new Date().getTime());
+                    String message = binding.messageText.getText().toString();
 
-                binding.messageText.setText("");
+                    final MessageModel model = new MessageModel(senderId, message);
+                    model.setTimestamp(new Date().getTime());
 
-                database.getReference().child("Chats")
-                        .child(sendersRoom)
-                        .push().setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    binding.messageText.setText("");
 
-                            @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    database.getReference().child("Chats")
+                            .child(sendersRoom)
+                            .push().setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
 
-                        database.getReference().child("Chats")
-                                .child(receiversRoom)
-                                .push().setValue(model);
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                    }
-                });
+                            database.getReference().child("Chats")
+                                    .child(receiversRoom)
+                                    .push().setValue(model);
+
+                        }
+                    });
+
+                } else {
+
+                    binding.messageText.setError("Enter some text first");
+
+                }
 
             }
         });

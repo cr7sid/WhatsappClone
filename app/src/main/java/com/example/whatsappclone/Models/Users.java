@@ -2,10 +2,20 @@ package com.example.whatsappclone.Models;
 
 public class Users {
 
-    private String profilePic, userName , email, userId, password, lastMessage;
+    private String profilePic, userName , email, userId, password, lastMessage, about;
+
+
 
     public Users() {
         //Empty constructor required for Firebase
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public String getUserId() {
@@ -23,13 +33,14 @@ public class Users {
         this.password = password;
     }
 
-    public Users(String profilePic, String userName, String email, String userId, String password, String lastMessage) {
+    public Users(String profilePic, String userName, String email, String userId, String password, String lastMessage, String about) {
         this.profilePic = profilePic;
         this.userName = userName;
         this.email = email;
         this.userId = userId;
         this.password = password;
         this.lastMessage = lastMessage;
+        this.about = about;
     }
 
     public String getProfilePic() {

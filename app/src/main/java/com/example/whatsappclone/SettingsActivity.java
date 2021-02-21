@@ -25,6 +25,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.net.URI;
+import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -68,7 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
                                 .placeholder(R.drawable.ic_user)
                                 .into(binding.profileImageUpload);
 
-                        Log.i("Profile Pic", users.getProfilePic());
+                        binding.etStatus.setText(users.getAbout());
+                        binding.etUserName.setText(users.getUserName());
 
                     }
 
@@ -87,6 +89,27 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
+
+            }
+        });
+
+        binding.saveButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                String userName = binding.etUserName.getText().toString();
+                String status = binding.etStatus.getText().toString();
+
+                HashMap<String, Object> obj = new HashMap<>();
+
+                obj.put("userName", userName);
+                obj.put("about", status);
+
+                database.getReference().child("Users").child(mAuth.getUid()).updateChildren(obj);
+
+                Toast.makeText(SettingsActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+
 
             }
         });

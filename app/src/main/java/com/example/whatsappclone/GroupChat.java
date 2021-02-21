@@ -87,24 +87,33 @@ public class GroupChat extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String message = binding.messageText.getText().toString();
-                MessageModel model = new MessageModel(senderId, message);
-                model.setTimestamp(new Date().getTime());
+                if(!binding.messageText.getText().toString().equals("")) {
 
-                binding.messageText.setText("");
+                    String message = binding.messageText.getText().toString();
+                    MessageModel model = new MessageModel(senderId, message);
+                    model.setTimestamp(new Date().getTime());
 
-                database.getReference()
-                        .child("Group Chat")
-                        .push()
-                        .setValue(model)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    binding.messageText.setText("");
 
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                    database.getReference()
+                            .child("Group Chat")
+                            .push()
+                            .setValue(model)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
 
 
-                            }
-                        });
+                                }
+                            });
+
+                } else {
+
+                    binding.messageText.setError("Enter some text first");
+
+                }
+
             }
         });
 
